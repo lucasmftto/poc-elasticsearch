@@ -19,7 +19,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/elasticsearch")
-@RequiredArgsConstructor
 @CrossOrigin("*")
 public class ElasticsearchController {
 
