@@ -8,6 +8,7 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,4 +40,22 @@ public class PersonagemController {
 
         return personagemService.savePersonagem(personagemDto);
     }
+
+    @ApiOperation(value = "Deleta Personagem")
+    @DeleteMapping("{nome}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable String nome) {
+        MDC.clear();
+        MDC.put("Delete Personagem: ", String.valueOf(UUID.randomUUID()));
+        this.personagemService.deleteByNome(nome);
+    }
+
+    @ApiOperation(value = "Pesquisa todas Perguntas template")
+    @GetMapping("/template")
+    public SearchHits<Personagem> findByNomeTemplate(@RequestParam(value = "nome", required = false, defaultValue = "") String nome){
+        MDC.clear();
+        MDC.put("Find Personagem By Nome: ", String.valueOf(UUID.randomUUID()));
+        return this.personagemService.findByNomeTemplate(nome);
+    }
+
 }

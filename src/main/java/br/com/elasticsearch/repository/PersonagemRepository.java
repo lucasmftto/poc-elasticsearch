@@ -8,4 +8,6 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 public interface PersonagemRepository extends ElasticsearchRepository<Personagem, String> {
 
     Page<Personagem> findByNome(String nome, Pageable pageable);
+
+    void deleteByNome(String nome);
 }
