@@ -58,4 +58,13 @@ public class PersonagemController {
         return this.personagemService.findByNomeTemplate(nome);
     }
 
+    @ApiOperation(value = "Atualiza Personagem")
+    @PutMapping("{nome}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable String nome, @Valid @RequestBody PersonagemDto personagemDto) {
+        MDC.clear();
+        MDC.put("Update Personagem: ", String.valueOf(UUID.randomUUID()));
+        this.personagemService.updateQuestion(nome, personagemDto);
+    }
+
 }

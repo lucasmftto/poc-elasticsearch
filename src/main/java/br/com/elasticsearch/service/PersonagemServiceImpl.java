@@ -12,6 +12,7 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -59,5 +60,26 @@ public class PersonagemServiceImpl implements PersonagemService{
     @Override
     public void deleteByNome(String nome) {
         this.personagemRepository.deleteByNome(nome);
+    }
+
+    @Override
+    public void updateQuestion(String nome, PersonagemDto personagemDto) {
+        Query searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchQuery("nome", nome).minimumShouldMatch("75%"))
+                .build();
+
+        SearchHits<Personagem> articles =
+                template.search(searchQuery, Personagem.class, IndexCoordinates.of("personagem"));
+        Personagem personagem = articles.getSearchHit(0).getContent();
+
+        personagem.setNome(personagemDto.getNome());
+        personagem.setPericias(personagemDto.getPericias());
+        personagem.setDescricao(personagemDto.getDescricao());
+        personagem.setJogador(personagemDto.getJogador());
+        personagem.setVantagensDesvantagens(personagemDto.getVantagensDesvantagens());
+        personagem.setPeculariedades(personagemDto.getPeculariedades());
+
+        this.personagemRepository.save(personagem);
+
     }
 }

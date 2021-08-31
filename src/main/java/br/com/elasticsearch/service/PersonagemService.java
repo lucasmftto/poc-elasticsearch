@@ -15,4 +15,6 @@ public interface PersonagemService {
     SearchHits<Personagem> findByNomeTemplate(String nome);
 
     void deleteByNome(String nome);
+
+    void updateQuestion(String nome, PersonagemDto personagemDto);
 }
